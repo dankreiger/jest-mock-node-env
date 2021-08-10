@@ -9,12 +9,16 @@ export const hooks: THook[] = [
   'afterAll',
 ];
 
+let _global = global;
+
 hooks.forEach(hook => {
-  global[hook] = function fn(hookCallback) {
+  _global[hook] = hookCallback => {
     const copy = { ...hookCallback };
     jest.resetModules();
-    process.env = OLD_ENV;
+    process.env = { ...OLD_ENV };
     const args = (copy as Function).arguments;
     hookCallback(args);
   };
 });
+
+export const mockNodeEnv = _global;
