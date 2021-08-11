@@ -17,7 +17,8 @@ hooks.forEach(hook => {
     jest.resetModules();
     process.env = { ...OLD_ENV };
     const args = (copy as Function).arguments;
-    hookCallback(args);
+    // @ts-expect-error
+    hookCallback(...args);
   };
 });
 
